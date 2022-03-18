@@ -1,0 +1,188 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="{% static 'analysis/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'analysis/spinkit.css' %}">
+    <script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <script src="{% static 'analysis/index.js' %}"></script>
+    <script src="https://sdk.scdn.co/spotify-player.js"></script>
+        <!-- <script>
+            window.onSpotifyWebPlaybackSDKReady = () => {
+            var id = undefined;
+            const token = 'BQDVSQkqiLPbOUAeYMTLsORlhtTqPxhhLfDEole-lGxVetauwjBmfESZEfDUp15A1Z-bKxzhai3Jj_x5u-1_1qGOaqF-I6pmXZi92K08MzDFuxQ7-iZtxALKje9M-qWfPYZRlSRAS5MU7syJjyIolAVDX2m536UuovWNaFpEJXhRsu6-v0vtHIk';
+
+            const player = new Spotify.Player({
+                name: 'Moodmix',
+                getOAuthToken: cb => { cb(token);
+                    
+                },
+                spotify_uri: 'spotify:track:7xGfFoTpQ2E7fRF5lN10tr'
+
+            });
+
+            // Error handling
+            player.addListener('initialization_error', ({ message }) => { console.error(message); });
+            player.addListener('authentication_error', ({ message }) => { console.error(message); });
+            player.addListener('account_error', ({ message }) => { console.error(message); });
+            player.addListener('playback_error', ({ message }) => { console.error(message); });
+
+            // Playback status updates
+            player.addListener('player_state_changed', state => { console.log(state); });
+
+            // Ready
+            player.addListener('ready', ({ device_id }) => {
+                console.log('Ready with Device ID', device_id);
+                var f = fetch(`https://api.spotify.com/v1/me/player/play?device_id=${device_id}`, {
+                method: 'PUT',
+                body: JSON.stringify({ uris: ['spotify:track:0cS0A1fUEUd1EW3FcF8AEI'] }),
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                });
+                // f();
+                console.log(f);
+            //     player.togglePlay().then(() => {
+            //   console.log('Toggled playback!');
+            // });
+            player.resume().then(() => {
+            console.log('Resumed!');
+            });
+            });
+
+            // Not Ready
+            player.addListener('not_ready', ({ device_id }) => {
+                id = device_id;
+                console.log('Device ID has gone offline', device_id);
+            });
+
+            // Connect to the player!
+            player.connect();
+            console.log("here");
+            console.log("HEre" + player)  ;
+            };
+        </script>   -->
+</head>
+<body>
+    <link href="https://fonts.googleapis.com/css?family=Josefin+Sans" rel="stylesheet">
+
+    <!-- Background & animion & navbar & title -->
+    <div class="container-fluid">
+    <!-- Background animtion-->
+        <div class="background" id="background">
+        <!-- <div class="cube"></div> -->
+        <!-- <div class="cube"></div> -->
+        <!-- <div class="cube"></div> -->
+        <!-- <div class="cube"></div> -->
+        <!-- <div class="cube"></div> -->
+        </div>
+    <!-- header -->
+            <header>
+            <!-- navbar -->
+                <nav>
+                    <ul>
+                    <li><a href="{% url 'index' %}">Home</a></li>
+                        <li><a href="{% url 'about' %}">About</a></li>
+                        <!-- <li><a href="#">Services</a></li>
+                        <li><a href="#">Portfolio</a></li>
+                        <li><a href="#">Contact</a></li> -->
+                    </ul>
+                </nav>
+                <!-- logo -->
+                <div class="logo"><span>We♫</span></div>
+                <!-- title & content -->
+                <section class="header-content">
+                    <h1>Welcome to MOODMIX.</h1>
+                    <p>An intuitive, new music recommendation platform tailored just for your mood.<br>
+                    Discover new music like never before with MOODMIX!</p>
+                    <form action="" method="POST">
+                        {% csrf_token %}
+                        <input type="text" name="sentence" id="sentence"><br><br>
+                        {{output}} <br>
+                        {% if output == "Empty" %}
+                            <input id="submit" type="submit" name="submit" onclick="myFunction(1)">
+                        {% else %}
+                        <input id="submit" type="submit" name="submit" onclick="myFunction()">
+                        {% endif %}
+                        
+                    </form>
+                    
+                    <!-- <button>Meet us</button> -->
+                </section>
+                <div id="songs" style="display: ;">
+                    <table class="styled-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Artist</th>
+                                <th>Year</th>
+                                <th>Play</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for r in results %}
+                                <tr>
+                                    <td>{{r.name}}</td>
+                                    <td>{{r.artist}}</td>
+                                    <td>{{r.year}}</td>
+                                    <td><iframe src="https://open.spotify.com/embed/track/{{r.id}}" width="300" height="80" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe></td>
+                                    <!-- <td></td> -->
+                                </tr>
+                            {% endfor %}
+                            
+                            <!-- <tr class="active-row">
+                                <td>Melissa</td>
+                                <td>5150</td>
+                            </tr> -->
+                            <!-- and so on... -->
+                        </tbody>
+                    </table>
+                </div>
+                <!-- <div class="loader" id= "loader"></div> -->
+                <div class="sk-circle" id="loader" style="display: none;">
+                    <div class="sk-circle-dot"></div>
+                    <div class="sk-circle-dot"></div>
+                    <div class="sk-circle-dot"></div>
+                    <div class="sk-circle-dot"></div>
+                    <div class="sk-circle-dot"></div>
+                    <div class="sk-circle-dot"></div>
+                    <div class="sk-circle-dot"></div>
+                    <div class="sk-circle-dot"></div>
+                    <div class="sk-circle-dot"></div>
+                    <div class="sk-circle-dot"></div>
+                    <div class="sk-circle-dot"></div>
+                    <div class="sk-circle-dot"></div>
+                  </div>
+            </header>
+        
+    </div>
+    <script> // self executing function here
+        (function() {
+           // your page initialization code here
+           // the DOM will be available here
+           var x = document.getElementById("songs");
+            var y= document.getElementById("background");
+            var loader = document.getElementById("loader")
+            if('{{show_table}}' == 'False'){
+                console.log('{{output}}')
+                x.style.display = "none";
+                y.style.height = "100vh";
+                // loader.style.display = "none";
+            }else{
+                x.style.display = "block";
+                // loader.style.display='none';
+                y.style.height = "500vh";
+                x.scrollIntoView();
+            }
+            var blank = document.getElementById("sentence");
+            if('{{sentence}}'){
+                blank.value = '{{sentence}}';
+            }else{
+                blank.value = '';
+            }
+        })();
+        </script>        
+
+</body>
+</html>

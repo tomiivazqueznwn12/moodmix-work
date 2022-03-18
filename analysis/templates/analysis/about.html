@@ -1,0 +1,172 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="{% static 'analysis/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'analysis/spinkit.css' %}">
+    <script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <script src="{% static 'analysis/index.js' %}"></script>
+    <script src="https://sdk.scdn.co/spotify-player.js"></script>
+        <!-- <script>
+            window.onSpotifyWebPlaybackSDKReady = () => {
+            var id = undefined;
+            const token = 'BQDVSQkqiLPbOUAeYMTLsORlhtTqPxhhLfDEole-lGxVetauwjBmfESZEfDUp15A1Z-bKxzhai3Jj_x5u-1_1qGOaqF-I6pmXZi92K08MzDFuxQ7-iZtxALKje9M-qWfPYZRlSRAS5MU7syJjyIolAVDX2m536UuovWNaFpEJXhRsu6-v0vtHIk';
+
+            const player = new Spotify.Player({
+                name: 'WeMusic',
+                getOAuthToken: cb => { cb(token);
+                    
+                },
+                spotify_uri: 'spotify:track:7xGfFoTpQ2E7fRF5lN10tr'
+
+            });
+
+            // Error handling
+            player.addListener('initialization_error', ({ message }) => { console.error(message); });
+            player.addListener('authentication_error', ({ message }) => { console.error(message); });
+            player.addListener('account_error', ({ message }) => { console.error(message); });
+            player.addListener('playback_error', ({ message }) => { console.error(message); });
+
+            // Playback status updates
+            player.addListener('player_state_changed', state => { console.log(state); });
+
+            // Ready
+            player.addListener('ready', ({ device_id }) => {
+                console.log('Ready with Device ID', device_id);
+                var f = fetch(`https://api.spotify.com/v1/me/player/play?device_id=${device_id}`, {
+                method: 'PUT',
+                body: JSON.stringify({ uris: ['spotify:track:0cS0A1fUEUd1EW3FcF8AEI'] }),
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                });
+                // f();
+                console.log(f);
+            //     player.togglePlay().then(() => {
+            //   console.log('Toggled playback!');
+            // });
+            player.resume().then(() => {
+            console.log('Resumed!');
+            });
+            });
+
+            // Not Ready
+            player.addListener('not_ready', ({ device_id }) => {
+                id = device_id;
+                console.log('Device ID has gone offline', device_id);
+            });
+
+            // Connect to the player!
+            player.connect();
+            console.log("here");
+            console.log("HEre" + player)  ;
+            };
+        </script>   -->
+</head>
+<body>
+    <link href="https://fonts.googleapis.com/css?family=Josefin+Sans" rel="stylesheet">
+
+    <!-- Background & animion & navbar & title -->
+    <div class="container-fluid">
+    <!-- Background animtion-->
+        <div class="background" id="background">
+        <!-- <div class="cube"></div> -->
+        <!-- <div class="cube"></div> -->
+        <!-- <div class="cube"></div> -->
+        <!-- <div class="cube"></div> -->
+        <!-- <div class="cube"></div> -->
+        </div>
+    
+    <!-- header -->
+            <header>
+            <!-- navbar -->
+                <nav>
+                    <ul>
+                    <li><a href="{% url 'index' %}">Home</a></li>
+                        <li><a href="{% url 'about' %}">About</a></li>
+                        <!-- <li><a href="#">Services</a></li>
+                        <li><a href="#">Portfolio</a></li>
+                        <li><a href="#">Contact</a></li> -->
+                    </ul>
+                </nav>
+                <!-- logo -->
+                <div class="logo"><span>WeMusic.</span></div>
+                <!-- title & content -->
+                <section class="header-content">
+                    <h1>Welcome to MOODMIX.</h1>
+                    <p class="about-para">A collaborative framework, built into a website application for our Technical Project, 
+                        MOODMIX is a music recommendation system that works on the amalgamation of machine learning, data science and music. 
+                        The platform uses Natural Language Processing to do a sentimental analysis of user-inputted texts, 
+                        which is then labelled according to one of three classes - Positive, Negative and Neutral. 
+                        Once labelled, the platform runs through its data repository, currently a public Spotify song dataset available on Kaggle, 
+                        to pick out songs from a wide range of years which complement the label. 
+                        These songs are then given in a list as the output, with details such as the artist(s), year of release and a Spotify 
+                        widget that plays the song exclusively for you</p>
+                    <p class="about-para">We consider our platform to be a small glimpse of the unending possibilities of the 
+                        near future in music and technology - a realm we consider unexplored to the fullest. This, 
+                        unsurprisingly, was the motivation behind our project - a new, simple way of absorbing musical content, 
+                        harnessed specifically for your current mood, while discovering a plethora of new music that you 
+                        otherwise might not have come across.</p>
+                    <p class="about-para">As we like to believe, musical taste might be subjective, 
+                        but the taste for music is undying and evergrowing. And this is a cog that fits right into a musical machine 
+                        for the future.</p>
+                </section>
+                <div id="songs" style="display: ;">
+                    <table class="styled-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Roll No.</th>
+                                <th>Course</th>
+                                <th>Specialization</th>
+                                
+                                
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Mansi Rathi</td>
+                                <td>I225</td>
+                                <td>MBA Tech.</td> 
+                                <td>Information Technology</td>
+                                
+
+                                
+                            </tr>
+                            <tr>
+                                <td>Riya Singh</td>
+                                <td>I231</td>
+                                <td>MBA Tech.</td> 
+                                <td>Information Technology</td>
+                                
+
+                                
+                            </tr>
+                            <tr>
+                                <td>Veni Nair</td>
+                                <td>I222</td>
+                                <td>MBA Tech.</td> 
+                                <td>Information Technology</td>
+                                
+
+                                
+                            </tr>
+                            <tr>
+                                <td>Shivi Agarwal</td>
+                                <td>I238</td>
+                                <td>MBA Tech.</td> 
+                                <td>Information Technology</td>
+                                
+
+                                
+                            </tr>
+                            
+                            
+                        </tbody>
+                    </table>
+                </div>
+        
+    </div>
+</body>
+</html>
